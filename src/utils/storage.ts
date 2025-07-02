@@ -5,6 +5,6 @@ export const saveScore = (score: number) => {
 };
 
 export const getScore = (): number => {
-  const saved = localStorage.getItem(SCORE_KEY);
-  return saved ? JSON.parse(saved) : 0;
+  const data = localStorage.getItem(SCORE_KEY);
+  return data ? JSON.parse(data) : 0;
 };

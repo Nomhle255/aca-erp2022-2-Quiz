@@ -1,23 +1,26 @@
 import React from 'react';
-import { QuestionType } from '../data/questions';
+import { Question as QuestionType } from '../data/questions';
 
 type Props = {
-  question: QuestionType;
-  onAnswer: (correct: boolean) => void;
+  data: QuestionType;
+  onAnswer: (selected: string) => void;
+  selected: string | null;
 };
 
-const Question: React.FC<Props> = ({ question, onAnswer }) => {
-  const handleAnswer = (option: string) => {
-    const isCorrect = option === question.answer;
-    onAnswer(isCorrect);
-  };
-
+const Question: React.FC<Props> = ({ data, onAnswer, selected }) => {
   return (
-    <div>
-      <h3>{question.question}</h3>
-      <ul>
-        {question.options.map((opt) => (
-          <li key={opt} onClick={() => handleAnswer(opt)}>{opt}</li>
+    <div className="quiz-container">
+      <h3 className="question-text">{data.question}</h3>
+      <ul className="options-list">
+        {data.options.map((option, index) => (
+          <li key={index} className="option-item">
+            <button
+              className={`option-button ${selected === option ? 'selected' : ''}`}
+              onClick={() => onAnswer(option)}
+            >
+              {index + 1}. {option}
+            </button>
+          </li>
         ))}
       </ul>
     </div>

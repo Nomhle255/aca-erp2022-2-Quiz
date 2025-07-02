@@ -1,28 +1,56 @@
 import React, { useState } from 'react';
-import Question from './Question';
 import { questions } from '../data/questions';
-import { saveScore } from '../utils/storage';
+import Question from './Question';
 import Summary from './Summary';
+import { saveScore } from '../utils/storage';
 
 const Quiz: React.FC = () => {
-  const [current, setCurrent] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [showSummary, setShowSummary] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
-  const handleAnswer = (correct: boolean) => {
-    if (correct) setScore(prev => prev + 1);
-    const next = current + 1;
+  const handleAnswer = (option: string) => {
+    setSelected(option);
+    setError(false); // clear error when an answer is chosen
+  };
+
+  const handleNext = () => {
+    if (!selected) {
+      setError(true);
+      return;
+    }
+
+    const correct = questions[currentIndex].answer;
+    if (selected === correct) {
+      setScore(prev => prev + 1);
+    }
+
+    const next = currentIndex + 1;
     if (next < questions.length) {
-      setCurrent(next);
+      setCurrentIndex(next);
+      setSelected(null);
     } else {
-      saveScore(score + (correct ? 1 : 0));
+      saveScore(score);
       setShowSummary(true);
     }
   };
 
-  if (showSummary) return <Summary score={score} />;
+  if (showSummary) return <Summary score={score} total={questions.length} />;
 
-  return <Question question={questions[current]} onAnswer={handleAnswer} />;
+  return (
+    <div className="quiz-container">
+      <h2>Question {currentIndex + 1} of {questions.length}</h2>
+      <Question data={questions[currentIndex]} onAnswer={handleAnswer} selected={selected} />
+      
+      {error && <p style={{ color: 'red' }}>⚠️ Please select an answer before continuing.</p>}
+
+      <button onClick={handleNext} className="next-button">
+        Next
+      </button>
+    </div>
+  );
 };
 
 export default Quiz;
