@@ -13,7 +13,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "CommonJS",  // Change this from "esnext" to "CommonJS"
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
