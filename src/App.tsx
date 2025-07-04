@@ -10,7 +10,7 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [answers, setAnswers] = useState<any>({});
   const [score, setScore] = useState<number>(0);
-  const [user, setUser] = useState<any>(null);  // Track if the user is authenticated
+  const [user, setUser] = useState<any>(null);  
 
   useEffect(() => {
     // Mocking the fetching process for the sake of this example
